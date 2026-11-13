@@ -1,4 +1,58 @@
-# Аналізатор диска для Arch Linux
+# Arch Linux Disk Analyzer
+
+[English](#english) | [Українська](#українська)
+
+## English
+
+A command-line utility for Python 3.10+ with no third-party dependencies.
+Reports the pacman cache, yay cache and build files, the user's trash,
+`/var/log` (including the persistent systemd journal), the temporary journal
+in `/run/log/journal`, and the largest top-level directories in the home
+directory, including hidden ones.
+
+```bash
+cd /home/caelestia/First/First
+python disk_analyzer.py
+python disk_analyzer.py --top 20
+python disk_analyzer.py --home /home/another_user
+python disk_analyzer.py --yay-cache /path/to/yay --pacman-cache /path/to/pkg
+```
+
+The program only reads files. Run it as your own user: running it with `sudo`
+changes the home directory and may report root's cache and trash instead.
+Inaccessible files are marked as an incomplete result, with warnings sent
+to stderr. Missing directories are marked separately. Exit codes: `0` — scan
+completed, `1` — incomplete scan, `2` — invalid arguments, `130` — Ctrl+C.
+
+Pacman cache paths are read using `pacman-conf CacheDir`; the yay build path
+is read from `buildDir` in the yay configuration. If the configuration is
+unavailable, default paths are used. Absolute `XDG_CACHE_HOME`, `XDG_CONFIG_HOME`,
+and `XDG_DATA_HOME` paths are supported. When `--home` is explicitly provided,
+the standard subdirectories of that directory are used, ignoring the current
+user's XDG environment variables.
+
+Sizes are calculated from allocated blocks (`st_blocks × 512`), including
+the directories themselves. Symbolic links are not followed; hard links
+are counted once within each measured directory. Filesystems mounted inside
+directories are also scanned. Scanning large disks can take a while. Files
+that change during the scan may affect the results.
+
+Trash refers to `$XDG_DATA_HOME/Trash` (by default `~/.local/share/Trash`),
+including metadata. Trash directories on other disks are not scanned. Regular
+files directly in the home directory are excluded from the directory ranking.
+Categories overlap with the ranking and should not be added together. On Btrfs
+and other filesystems with shared blocks, these figures do not guarantee how
+much space deleting files would free.
+
+Run the tests:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+## Українська
+
+### Аналізатор диска для Arch Linux
 
 Консольна утиліта на Python 3.10+ без сторонніх залежностей. Показує кеш
 pacman, кеш і збірки yay, кошик користувача, `/var/log` (разом із постійним
