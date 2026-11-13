@@ -11,7 +11,7 @@ in `/run/log/journal`, and the largest top-level directories in the home
 directory, including hidden ones.
 
 ```bash
-cd /home/caelestia/First/First
+cd /home/user/First
 python disk_analyzer.py
 python disk_analyzer.py --top 20
 python disk_analyzer.py --home /home/another_user
@@ -60,7 +60,7 @@ systemd journal), тимчасовий journal у `/run/log/journal` та най
 першого рівня в домашній директорії, включно з прихованими.
 
 ```bash
-cd /home/caelestia/First/First
+cd /home/user/First
 python disk_analyzer.py
 python disk_analyzer.py --top 20
 python disk_analyzer.py --home /home/інший_користувач
