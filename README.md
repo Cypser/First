@@ -1,3 +1,3 @@
-#My first project\n
+#My first project
 
 This is my Git project.
